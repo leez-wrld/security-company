@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VIP Protection - Private Security Services</title>
+<style>
+    /* Reset and Base Styles */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+        background-color: #111921;
+        color: white;
+        line-height: 1.6;
+    }
+
+    a {
+        text-decoration: none;
+        color: white;
+    }
+
+    /* Header and Navigation */
+    header {
+        padding: 20px 50px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: absolute;
+        width: 100%;
+        z-index: 10;
+    }
+
+    .logo {
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    nav ul {
+        display: flex;
+        list-style: none;
+    }
+
+    nav ul li {
+        margin-left: 30px;
+        position: relative;
+    }
+
+    nav ul li a {
+        position: relative;
+        font-weight: 500;
+        transition: color 0.3s;
+    }
+
+    nav ul li a:hover {
+        color: #d4af37;
+    }
+
+    nav ul li a::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 2px;
+        background: #d4af37;
+        left: 0;
+        bottom: -5px;
+        transition: width 0.3s;
+    }
+
+    nav ul li a:hover::after {
+        width: 100%;
+    }
+
+    /* Dropdown Menu */
+    .dropdown {
+        position: relative;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #0c131a;
+        min-width: 200px;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        z-index: 1;
+        border-radius: 4px;
+        overflow: hidden;
+        top: 30px;
+        left: -20px;
+        border: 1px solid #1a2530;
+    }
+
+    .dropdown-content a {
+        color: white;
+        padding: 12px 16px;
+        display: block;
+        transition: all 0.3s;
+    }
+
+    .dropdown-content a:hover {
+        background-color: #1a2530;
+        color: #d4af37;
+    }
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+        animation: fadeIn 0.3s;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Hamburger Menu */
+    .hamburger {
+        display: none;
+        cursor: pointer;
+        width: 30px;
+        height: 24px;
+        position: relative;
+        z-index: 25;
+    }
+
+    .hamburger-line {
+        display: block;
+        width: 100%;
+        height: 3px;
+        background-color: #d4af37;
+        margin: 5px 0;
+        transition: all 0.3s ease;
+        border-radius: 2px;
+    }
+
+    /* Animated hamburger when active */
+    .hamburger.active .hamburger-line:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 6px);
+    }
+
+    .hamburger.active .hamburger-line:nth-child(2) {
+        opacity: 0;
+    }
+
+    .hamburger.active .hamburger-line:nth-child(3) {
+        transform: rotate(-45deg) translate(5px, -6px);
+    }
+
+    /* Service Hero Section */
+    .service-hero {
+        height: 60vh;
+        background-color: #0a1520;
+        background-image: 
+            linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+            repeating-linear-gradient(45deg, rgba(10, 21, 32, 0.8) 0px, rgba(10, 21, 32, 0.8) 10px, rgba(15, 30, 45, 0.8) 10px, rgba(15, 30, 45, 0.8) 20px);
+        background-position: center;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding-top: 80px;
+    }
+
+    .service-hero-content {
+        max-width: 800px;
+        padding: 0 20px;
+        position: relative;
+        z-index: 2;
+        animation: fadeIn 1s ease-out;
+    }
+
+    .service-hero h1 {
+        font-size: 48px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        position: relative;
+        display: inline-block;
+    }
+
+    .service-hero h1::after {
+        content: '';
+        position: absolute;
+        width: 80px;
+        height: 4px;
+        background-color: #d4af37;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .service-hero p {
+        font-size: 20px;
+        margin-bottom: 30px;
+    }
+
+    /* Section Styles */
+    .section {
+        padding: 80px 50px;
+    }
+
+    .section-title {
+        font-size: 32px;
+        margin-bottom: 40px;
+        position: relative;
+        display: inline-block;
+    }
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        width: 50px;
+        height: 3px;
+        background-color: #d4af37;
+        bottom: -10px;
+        left: 0;
+    }
+
+    .dark-bg {
+        background-color: #111921;
+    }
+
+    .darker-bg {
+        background-color: #0c131a;
+    }
+
+    /* Service Content */
+    .service-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 40px;
+        margin-bottom: 60px;
+    }
+
+    .service-content {
+        flex: 1;
+        min-width: 300px;
+    }
+
+    .service-image {
+        flex: 1;
+        min-width: 300px;
+        height: 400px;
+        border-radius: 8px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .service-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .service-image:hover img {
+        transform: scale(1.05);
+    }
+
+    .service-features {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin-top: 40px;
+    }
+
+    .feature-item {
+        flex: 1;
+        min-width: 250px;
+        margin: 15px;
+        padding: 25px;
+        background-color: rgba(20, 30, 45, 0.5);
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid transparent;
+    }
+
+    .feature-item::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+        transform: translateX(-100%);
+        transition: transform 0.6s ease;
+    }
+
+    .feature-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        border: 1px solid rgba(212, 175, 55, 0.3);
+    }
+
+    .feature-item:hover::before {
+        transform: translateX(100%);
+    }
+
+    .feature-item h3 {
+        font-size: 20px;
+        margin-bottom: 15px;
+        color: #d4af37;
+    }
+
+    /* Icon Styles */
+    .icon {
+        margin-bottom: 20px;
+        position: relative;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.3s ease;
+    }
+
+    .feature-item:hover .icon {
+        transform: scale(1.2);
+    }
+
+    /* Person Icon */
+    .icon-person {
+        position: relative;
+    }
+
+    .icon-person::before {
+        content: '';
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        background-color: transparent;
+        border: 2px solid #d4af37;
+        border-radius: 50%;
+        top: 0;
+        left: 7px;
+    }
+
+    .icon-person::after {
+        content: '';
+        position: absolute;
+        width: 24px;
+        height: 14px;
+        background-color: transparent;
+        border: 2px solid #d4af37;
+        border-radius: 12px 12px 0 0;
+        top: 20px;
+        left: 3px;
+        border-bottom: none;
+    }
+
+    /* CTA Section */
+    .cta-section {
+        text-align: center;
+        padding: 60px 20px;
+        background-color: rgba(20, 30, 45, 0.5);
+        border-radius: 8px;
+        margin-top: 40px;
+    }
+
+    .cta-section h2 {
+        font-size: 32px;
+        margin-bottom: 20px;
+    }
+
+    .cta-section p {
+        max-width: 600px;
+        margin: 0 auto 30px;
+        font-size: 18px;
+    }
+
+    .btn {
+        display: inline-block;
+        background-color: #d4af37;
+        color: #111;
+        padding: 12px 30px;
+        border: none;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+    }
+
+    .btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
+        z-index: -1;
+    }
+
+    .btn:hover {
+        background-color: #c4a030;
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn:hover::before {
+        left: 100%;
+    }
+
+    /* FAQ Section */
+    .faq-container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .faq-item {
+        margin-bottom: 20px;
+        border: 1px solid #1a2530;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .faq-question {
+        padding: 15px 20px;
+        background-color: rgba(20, 30, 45, 0.5);
+        font-weight: bold;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: background-color 0.3s ease;
+    }
+
+    .faq-question:hover {
+        background-color: rgba(30, 40, 55, 0.5);
+    }
+
+    .faq-question::after {
+        content: '+';
+        font-size: 20px;
+        color: #d4af37;
+        transition: transform 0.3s ease;
+    }
+
+    .faq-item.active .faq-question::after {
+        transform: rotate(45deg);
+    }
+
+    .faq-answer {
+        padding: 0 20px;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease, padding 0.3s ease;
+    }
+
+    .faq-item.active .faq-answer {
+        padding: 15px 20px;
+        max-height: 500px;
+    }
+
+    /* Footer */
+    footer {
+        padding: 30px 50px;
+        background-color: #0a0f14;
+        text-align: center;
+    }
+
+    .footer-content {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin-bottom: 30px;
+    }
+
+    .footer-column {
+        flex: 1;
+        min-width: 250px;
+        margin-bottom: 20px;
+        text-align: left;
+        padding: 0 15px;
+    }
+
+    .footer-column h3 {
+        font-size: 20px;
+        margin-bottom: 20px;
+        position: relative;
+        display: inline-block;
+    }
+
+    .footer-column h3::after {
+        content: '';
+        position: absolute;
+        width: 30px;
+        height: 2px;
+        background-color: #d4af37;
+        bottom: -8px;
+        left: 0;
+    }
+
+    .footer-links {
+        list-style: none;
+    }
+
+    .footer-links li {
+        margin-bottom: 10px;
+    }
+
+    .footer-links a {
+        color: #ccc;
+        transition: color 0.3s;
+        position: relative;
+        padding-left: 15px;
+    }
+
+    .footer-links a::before {
+        content: '›';
+        position: absolute;
+        left: 0;
+        color: #d4af37;
+        transition: transform 0.3s;
+    }
+
+    .footer-links a:hover {
+        color: #d4af37;
+    }
+
+    .footer-links a:hover::before {
+        transform: translateX(3px);
+    }
+
+    .copyright {
+        color: #999;
+        border-top: 1px solid #1a2530;
+        padding-top: 20px;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        header {
+            padding: 20px;
+        }
+
+        .hamburger {
+            display: block;
+        }
+
+        nav ul {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            height: 100vh;
+            width: 80%;
+            background-color: #0c131a;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: left 0.5s ease;
+            z-index: 20;
+        }
+
+        nav ul.active {
+            left: 0;
+        }
+
+        nav ul li {
+            margin: 20px 0;
+        }
+
+        .dropdown-content {
+            position: static;
+            display: none;
+            width: 100%;
+            box-shadow: none;
+            border: none;
+            background-color: transparent;
+        }
+
+        .dropdown-content a {
+            padding: 10px 20px;
+        }
+
+        .dropdown.active .dropdown-content {
+            display: block;
+        }
+
+        .section {
+            padding: 60px 20px;
+        }
+
+        .service-hero h1 {
+            font-size: 36px;
+        }
+
+        .service-hero p {
+            font-size: 18px;
+        }
+
+        .feature-item {
+            min-width: 100%;
+            margin: 15px 0;
+        }
+    }
+
+    /* Page Transition Animation */
+    @keyframes pageTransition {
+        0% { opacity: 0; transform: translateY(20px); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
+
+    body {
+        animation: pageTransition 0.5s ease-out;
+    }
+</style>
+</head>
+<body>
+<!-- Header and Navigation -->
+<header>
+    <div class="logo">COMPANY NAME</div>
+    <div class="hamburger" id="hamburger">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+    </div>
+    <nav>
+        <ul id="menu">
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="index.html#about">ABOUT</a></li>
+            <li class="dropdown">
+                <a href="javascript:void(0)">SERVICES</a>
+                <div class="dropdown-content">
+                    <a href="security-guards.html">Security Guards</a>
+                    <a href="surveillance-systems.html">Surveillance Systems</a>
+                    <a href="access-control.html">Access Control</a>
+                    <a href="risk-assessment.html">Risk Assessment</a>
+                    <a href="vip-protection.html">VIP Protection</a>
+                    <a href="event-security.html">Event Security</a>
+                </div>
+            </li>
+            <li><a href="index.html#gallery">GALLERY</a></li>
+            <li><a href="index.html#quote">QUOTE</a></li>
+            <li><a href="index.html#contact">CONTACT</a></li>
+        </ul>
+    </nav>
+</header>
+
+<!-- Service Hero Section -->
+<section class="service-hero">
+    <div class="service-hero-content">
+        <h1>VIP PROTECTION</h1>
+        <p>Specialized security services for executives, celebrities, and high-profile individuals</p>
+    </div>
+</section>
+
+<!-- Service Overview Section -->
+<section class="section dark-bg">
+    <div class="service-container">
+        <div class="service-content">
+            <h2 class="section-title">Executive Protection Services</h2>
+            <p>Our VIP protection services provide discreet, professional security for high-profile individuals who require enhanced personal protection. Our executive protection specialists are trained to identify and mitigate potential threats while maintaining a low profile that allows our clients to conduct their business and personal affairs without disruption.</p>
+            <br>
+            <p>We understand that effective VIP protection requires a balance of vigilance and discretion. Our protection teams conduct thorough advance work, risk assessments, and route planning to anticipate potential security concerns before they arise. We tailor our approach to each client's specific needs, lifestyle, and risk profile.</p>
+            <br>
+            <p>All of our executive protection specialists have extensive backgrounds in law enforcement, military special operations, or specialized security services. They undergo rigorous training in protective tactics, threat assessment, defensive driving, first aid, and crisis management to ensure they can respond effectively to any situation.</p>
+        </div>
+        <div class="service-image">
+            <img src="/placeholder.svg?height=400&width=400" alt="VIP Protection">
+        </div>
+    </div>
+
+    <div class="service-features">
+        <div class="feature-item">
+            <div class="icon icon-person"></div>
+            <h3>Close Protection</h3>
+            <p>Highly trained personal security officers who provide immediate physical protection while maintaining a professional, unobtrusive presence.</p>
+        </div>
+        <div class="feature-item">
+            <div class="icon icon-person"></div>
+            <h3>Secure Transportation</h3>
+            <p>Armored vehicles and trained security drivers who ensure safe transit between locations with defensive driving capabilities.</p>
+        </div>
+        <div class="feature-item">
+            <div class="icon icon-person"></div>
+            <h3>Advance Work</h3>
+            <p>Thorough preparation and location assessment before client arrival to identify potential security concerns and establish safe routes.</p>
+        </div>
+        <div class="feature-item">
+            <div class="icon icon-person"></div>
+            <h3>Threat Assessment</h3>
+            <p>Ongoing evaluation of potential risks specific to the client, including monitoring of concerning communications or activities.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Client Types Section -->
+<section class="section darker-bg">
+    <h2 class="section-title">Who We Protect</h2>
+    <div class="service-features">
+        <div class="feature-item">
+            <h3>Corporate Executives</h3>
+            <p>Protection for C-suite executives, board members, and high-level corporate officials during business operations and travel.</p>
+        </div>
+        <div class="feature-item">
+            <h3>Celebrities & Public Figures</h3>
+            <p>Discreet security for entertainment professionals, athletes, and public personalities at events and in daily life.</p>
+        </div>
+        <div class="feature-item">
+            <h3>High-Net-Worth Individuals</h3>
+            <p>Comprehensive protection for wealthy individuals and families who may face elevated security risks due to their status.</p>
+        </div>
+        <div class="feature-item">
+            <h3>Foreign Dignitaries</h3>
+            <p>Specialized protection for visiting officials, diplomats, and international business leaders unfamiliar with local environments.</p>
+        </div>
+        <div class="feature-item">
+            <h3>At-Risk Individuals</h3>
+            <p>Security for persons facing specific threats, including those involved in high-profile legal cases or controversial matters.</p>
+        </div>
+        <div class="feature-item">
+            <h3>Corporate Teams</h3>
+            <p>Group protection for executive teams during retreats, conferences, or when traveling to high-risk locations.</p>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="section dark-bg">
+    <h2 class="section-title">Frequently Asked Questions</h2>
+    <div class="faq-container">
+        <div class="faq-item">
+            <div class="faq-question">How do you maintain client privacy and confidentiality?</div>
+            <div class="faq-answer">
+                <p>Client confidentiality is paramount in our VIP protection services. All our protection specialists sign comprehensive non-disclosure agreements and undergo background checks. We implement strict information compartmentalization protocols, limiting sensitive details to only those who need to know. Our operational planning and communications use secure channels with encryption. We never disclose client identities, locations, or activities, and we coordinate with clients regarding social media policies and digital privacy measures. Even within our organization, client information is strictly controlled and protected.</p>
+            </div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">What qualifications do your protection specialists have?</div>
+            <div class="faq-answer">
+                <p>Our VIP protection specialists typically have backgrounds in elite military units, specialized law enforcement (such as diplomatic protection services), or extensive executive protection experience. All team members hold relevant certifications in protective services, defensive tactics, and emergency medical response. Many possess advanced qualifications in threat assessment, defensive driving, and crisis management. We require ongoing training and regular recertification to ensure skills remain current. Our specialists are selected not only for their technical abilities but also for their discretion, professionalism, and ability to operate effectively in various social and business environments.</p>
+            </div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">How do you determine the appropriate level of protection?</div>
+            <div class="faq-answer">
+                <p>We determine appropriate protection levels through a comprehensive risk assessment process that evaluates the client's profile, specific threat landscape, travel patterns, and personal preferences. This includes analyzing the client's public exposure, past security incidents, current threat intelligence, and upcoming activities. We consider the environments the client frequents, from office locations to travel destinations, assessing each for potential vulnerabilities. Based on this analysis, we recommend a tailored protection package that may range from a single close protection officer to a complete security detail with advance teams. Our approach is scalable and adaptable, allowing us to adjust protection levels as circumstances change.</p>
+            </div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">Can your protection teams travel internationally?</div>
+            <div class="faq-answer">
+                <p>Yes, our protection teams are fully equipped for international travel and operations. We maintain a global network of security professionals and partners who provide local expertise and support in various regions. Our international protection services include advance work in destination countries, coordination with local security resources, and navigation of foreign security protocols and legal requirements. Our specialists are experienced in managing international logistics, including weapons permits where applicable, secure transportation arrangements, and accommodation security assessments. We also provide comprehensive briefings on destination-specific risks and cultural considerations to ensure our protection strategies are both effective and culturally appropriate.</p>
+            </div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">How do you balance security with maintaining a normal lifestyle?</div>
+            <div class="faq-answer">
+                <p>Balancing effective security with lifestyle considerations is central to our approach. We begin by understanding the client's daily routines, preferences, and comfort level with visible security measures. Our protection specialists are trained to maintain a discreet presence that minimizes disruption while ensuring safety. We develop security protocols that integrate seamlessly with the client's lifestyle, adapting our methods to different environments—from business meetings to family outings. Our goal is to provide peace of mind without creating a sense of restriction. We regularly review and adjust our approach based on client feedback to ensure the right balance between comprehensive protection and personal freedom.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="section darker-bg">
+    <div class="cta-section">
+        <h2>Ready to Discuss Your Protection Needs?</h2>
+        <p>Contact us today for a confidential consultation about our VIP protection services tailored to your specific requirements.</p>
+        <a href="index.html#quote" class="btn">Request a Consultation</a>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer>
+    <div class="footer-content">
+        <div class="footer-column">
+            <h3>COMPANY NAME</h3>
+            <p>Professional security services providing peace of mind and protection for businesses and individuals.</p>
+        </div>
+        <div class="footer-column">
+            <h3>QUICK LINKS</h3>
+            <ul class="footer-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#about">About Us</a></li>
+                <li><a href="index.html#services">Services</a></li>
+                <li><a href="index.html#gallery">Gallery</a></li>
+                <li><a href="index.html#quote">Get a Quote</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+        </div>
+        <div class="footer-column">
+            <h3>SERVICES</h3>
+            <ul class="footer-links">
+                <li><a href="security-guards.html">Security Guards</a></li>
+                <li><a href="surveillance-systems.html">Surveillance Systems</a></li>
+                <li><a href="access-control.html">Access Control</a></li>
+                <li><a href="risk-assessment.html">Risk Assessment</a></li>
+                <li><a href="vip-protection.html">VIP Protection</a></li>
+                <li><a href="event-security.html">Event Security</a></li>
+            </ul>
+        </div>
+        <div class="footer-column">
+            <h3>CONTACT</h3>
+            <div class="contact-info">
+                <div class="icon icon-phone"></div>
+                <span>123-456-7890</span>
+            </div>
+            <div class="contact-info">
+                <div class="icon icon-email"></div>
+                <span>info@companyname.com</span>
+            </div>
+        </div>
+    </div>
+    <div class="copyright">
+        &copy; 2023 COMPANY NAME. All Rights Reserved.
+    </div>
+</footer>
+
+<!-- JavaScript for Interactive Features -->
+<script>
+    // Mobile Menu Toggle
+    const hamburger = document.getElementById('hamburger');
+    const menu = document.getElementById('menu');
+
+    hamburger.addEventListener('click', () => {
+        menu.classList.toggle('active');
+        hamburger.classList.toggle('active');
+    });
+
+    // Mobile Dropdown Toggle
+    document.addEventListener('DOMContentLoaded', function() {
+        if (window.innerWidth <= 768) {
+            const dropdowns = document.querySelectorAll('.dropdown');
+            
+            dropdowns.forEach(dropdown => {
+                const link = dropdown.querySelector('a');
+                
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    dropdown.classList.toggle('active');
+                });
+            });
+        }
+    });
+
+    // FAQ Accordion
+    const faqItems = document.querySelectorAll('.faq-item');
+    
+    faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+        
+        question.addEventListener('click', () => {
+            // Close all other items
+            faqItems.forEach(otherItem => {
+                if (otherItem !== item && otherItem.classList.contains('active')) {
+                    otherItem.classList.remove('active');
+                }
+            });
+            
+            // Toggle current item
+            item.classList.toggle('active');
+        });
+    });
+
+    // Scroll Animation for Elements
+    const observerOptions = {
+        threshold: 0.1
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('fade-in');
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.feature-item, .service-content, .service-image, .faq-item').forEach(item => {
+        item.style.opacity = '0';
+        item.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+        item.style.transform = 'translateY(20px)';
+        observer.observe(item);
+    });
+
+    // Add the CSS for the animation
+    const style = document.createElement('style');
+    style.textContent = `
+        .fade-in {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+        }
+    `;
+    document.head.appendChild(style);
+</script>
+</body>
+</html>
