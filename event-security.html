@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Event Security - Private Security Services</title>
+<style>
+    /* Reset and Base Styles */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+        background-color: #111921;
+        color: white;
+        line-height: 1.6;
+    }
+
+    a {
+        text-decoration: none;
+        color: white;
+    }
+
+    /* Header and Navigation */
+    header {
+        padding: 20px 50px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: absolute;
+        width: 100%;
+        z-index: 10;
+    }
+
+    .logo {
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    nav ul {
+        display: flex;
+        list-style: none;
+    }
+
+    nav ul li {
+        margin-left: 30px;
+        position: relative;
+    }
+
+    nav ul li a {
+        position: relative;
+        font-weight: 500;
+        transition: color 0.3s;
+    }
+
+    nav ul li a:hover {
+        color: #d4af37;
+    }
+
+    nav ul li a::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 2px;
+        background: #d4af37;
+        left: 0;
+        bottom: -5px;
+        transition: width 0.3s;
+    }
+
+    nav ul li a:hover::after {
+        width: 100%;
+    }
+
+    /* Dropdown Menu */
+    .dropdown {
+        position: relative;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #0c131a;
+        min-width: 200px;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        z-index: 1;
+        border-radius: 4px;
+        overflow: hidden;
+        top: 30px;
+        left: -20px;
+        border: 1px solid #1a2530;
+    }
+
+    .dropdown-content a {
+        color: white;
+        padding: 12px 16px;
+        display: block;
+        transition: all 0.3s;
+    }
+
+    .dropdown-content a:hover {
+        background-color: #1a2530;
+        color: #d4af37;
+    }
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+        animation: fadeIn 0.3s;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Hamburger Menu */
+    .hamburger {
+        display: none;
+        cursor: pointer;
+        width: 30px;
+        height: 24px;
+        position: relative;
+        z-index: 25;
+    }
+
+    .hamburger-line {
+        display: block;
+        width: 100%;
+        height: 3px;
+        background-color: #d4af37;
+        margin: 5px 0;
+        transition: all 0.3s ease;
+        border-radius: 2px;
+    }
+
+    /* Animated hamburger when active */
+    .hamburger.active .hamburger-line:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 6px);
+    }
+
+    .hamburger.active .hamburger-line:nth-child(2) {
+        opacity: 0;
+    }
+
+    .hamburger.active .hamburger-line:nth-child(3) {
+        transform: rotate(-45deg) translate(5px, -6px);
+    }
+
+    /* Service Hero Section */
+    .service-hero {
+        height: 60vh;
+        background-color: #0a1520;
+        background-image: 
+            linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+            repeating-linear-gradient(45deg, rgba(10, 21, 32, 0.8) 0px, rgba(10, 21, 32, 0.8) 10px, rgba(15, 30, 45, 0.8) 10px, rgba(15, 30, 45, 0.8) 20px);
+        background-position: center;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding-top: 80px;
+    }
+
+    .service-hero-content {
+        max-width: 800px;
+        padding: 0 20px;
+        position: relative;
+        z-index: 2;
+        animation: fadeIn 1s ease-out;
+    }
+
+    .service-hero h1 {
+        font-size: 48px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        position: relative;
+        display: inline-block;
+    }
+
+    .service-hero h1::after {
+        content: '';
+        position: absolute;
+        width: 80px;
+        height: 4px;
+        background-color: #d4af37;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .service-hero p {
+        font-size: 20px;
+        margin-bottom: 30px;
+    }
+
+    /* Section Styles */
+    .section {
+        padding: 80px 50px;
+    }
+
+    .section-title {
+        font-size: 32px;
+        margin-bottom: 40px;
+        position: relative;
+        display: inline-block;
+    }
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        width: 50px;
+        height: 3px;
+        background-color: #d4af37;
+        bottom: -10px;
+        left: 0;
+    }
+
+    .dark-bg {
+        background-color: #111921;
+    }
+
+    .darker-bg {
+        background-color: #0c131a;
+    }
+
+    /* Service Content */
+    .service-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 40px;
+        margin-bottom: 60px;
+    }
+
+    .service-content {
+        flex: 1;
+        min-width: 300px;
+    }
+
+    .service-image {
+        flex: 1;
+        min-width: 300px;
+        height: 400px;
+        border-radius: 8px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .service-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .service-image:hover img {
+        transform: scale(1.05);
+    }
+
+    .service-features {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin-top: 40px;
+    }
+
+    .feature-item {
+        flex: 1;
+        min-width: 250px;
+        margin: 15px;
+        padding: 25px;
+        background-color: rgba(20, 30, 45, 0.5);
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid transparent;
+    }
+
+    .feature-item::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+        transform: translateX(-100%);
+        transition: transform 0.6s ease;
+    }
+
+    .feature-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        border: 1px solid rgba(212, 175, 55, 0.3);
+    }
+
+    .feature-item:hover::before {
+        transform: translateX(100%);
+    }
+
+    .feature-item h3 {
+        font-size: 20px;
+        margin-bottom: 15px;
+        color: #d4af37;
+    }
+
+    /* Icon Styles */
+    .icon {
+        margin-bottom: 20px;
+        position: relative;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.3s ease;
+    }
+
+    .feature-item:hover .icon {
+        transform: scale(1.2);
+    }
+
+    /* Shield Icon */
+    .icon-shield {
+        position: relative;
+        width: 30px;
+        height: 36px;
+        background-color: transparent;
+        border: 2px solid #d4af37;
+        border-radius: 50% 50% 0 0;
+        margin-top: 4px;
+    }
+
+    .icon-shield::before {
+        content: '';
+        position: absolute;
+        width: 26px;
+        height: 15px;
+        background-color: transparent;
+        border-left: 2px solid #d4af37;
+        border-right: 2px solid #d4af37;
+        border-bottom: 2px solid #d4af37;
+        border-radius: 0 0 12px 12px;
+        bottom: -2px;
+        left: 0;
+    }
+
+    /* CTA Section */
+    .cta-section {
+        text-align: center;
+        padding: 60px 20px;
+        background-color: rgba(20, 30, 45, 0.5);
+        border-radius: 8px;
+        margin-top: 40px;
+    }
+
+    .cta-section h2 {
+        font-size: 32px;
+        margin-bottom: 20px;
+    }
+
+    .cta-section p {
+        max-width: 600px;
+        margin: 0 auto 30px;
+        font-size: 18px;
+    }
+
+    .btn {
+        display: inline-block;
+        background-color: #d4af37;
+        color: #111;
+        padding: 12px 30px;
+        border: none;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+    }
+
+    .btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
+        z-index: -1;
+    }
+
+    .btn:hover {
+        background-color: #c4a030;
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn:hover::before {
+        left: 100%;
+    }
+
+    /* Process Section */
+    .process-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin-top: 40px;
+    }
+
+    .process-step {
+        flex: 1;
+        min-width: 250px;
+        margin: 15px;
+        padding: 25px;
+        background-color: rgba(20, 30, 45, 0.5);
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid transparent;
+        text-align: center;
+    }
+
+    .process-step::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+        transform: translateX(-100%);
+        transition: transform 0.6s ease;
+    }
+
+    .process-step:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        border: 1px solid rgba(212, 175, 55, 0.3);
+    }
+
+    .process-step:hover::before {
+        transform: translateX(100%);
+    }
+
+    .step-number {
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        background-color: #d4af37;
+        color: #111;
+        border-radius: 50%;
+        font-weight: bold;
+        font-size: 20px;
+        line-height: 40px;
+        margin-bottom: 15px;
+        transition: transform 0.3s ease;
+    }
+
+    .process-step:hover .step-number {
+        transform: scale(1.2);
+    }
+
+    .process-step h3 {
+        font-size: 20px;
+        margin-bottom: 15px;
+        color: #d4af37;
+    }
+
+    /* FAQ Section */
+    .faq-container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .faq-item {
+        margin-bottom: 20px;
+        border: 1px solid #1a2530;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .faq-question {
+        padding: 15px 20px;
+        background-color: rgba(20, 30, 45, 0.5);
+        font-weight: bold;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: background-color 0.3s ease;
+    }
+
+    .faq-question:hover {
+        background-color: rgba(30, 40, 55, 0.5);
+    }
+
+    .faq-question::after {
+        content: '+';
+        font-size: 20px;
+        color: #d4af37;
+        transition: transform 0.3s ease;
+    }
+
+    .faq-item.active .faq-question::after {
+        transform: rotate(45deg);
+    }
+
+    .faq-answer {
+        padding: 0 20px;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease, padding 0.3s ease;
+    }
+
+    .faq-item.active .faq-answer {
+        padding: 15px 20px;
+        max-height: 500px;
+    }
+
+    /* Footer */
+    footer {
+        padding: 30px 50px;
+        background-color: #0a0f14;
+        text-align: center;
+    }
+
+    .footer-content {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin-bottom: 30px;
+    }
+
+    .footer-column {
+        flex: 1;
+        min-width: 250px;
+        margin-bottom: 20px;
+        text-align: left;
+        padding: 0 15px;
+    }
+
+    .footer-column h3 {
+        font-size: 20px;
+        margin-bottom: 20px;
+        position: relative;
+        display: inline-block;
+    }
+
+    .footer-column h3::after {
+        content: '';
+        position: absolute;
+        width: 30px;
+        height: 2px;
+        background-color: #d4af37;
+        bottom: -8px;
+        left: 0;
+    }
+
+    .footer-links {
+        list-style: none;
+    }
+
+    .footer-links li {
+        margin-bottom: 10px;
+    }
+
+    .footer-links a {
+        color: #ccc;
+        transition: color 0.3s;
+        position: relative;
+        padding-left: 15px;
+    }
+
+    .footer-links a::before {
+        content: '›';
+        position: absolute;
+        left: 0;
+        color: #d4af37;
+        transition: transform 0.3s;
+    }
+
+    .footer-links a:hover {
+        color: #d4af37;
+    }
+
+    .footer-links a:hover::before {
+        transform: translateX(3px);
+    }
+
+    .copyright {
+        color: #999;
+        border-top: 1px solid #1a2530;
+        padding-top: 20px;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        header {
+            padding: 20px;
+        }
+
+        .hamburger {
+            display: block;
+        }
+
+        nav ul {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            height: 100vh;
+            width: 80%;
+            background-color: #0c131a;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: left 0.5s ease;
+            z-index: 20;
+        }
+
+        nav ul.active {
+            left: 0;
+        }
+
+        nav ul li {
+            margin: 20px 0;
+        }
+
+        .dropdown-content {
+            position: static;
+            display: none;
+            width: 100%;
+            box-shadow: none;
+            border: none;
+            background-color: transparent;
+        }
+
+        .dropdown-content a {
+            padding: 10px 20px;
+        }
+
+        .dropdown.active .dropdown-content {
+            display: block;
+        }
+
+        .section {
+            padding: 60px 20px;
+        }
+
+        .service-hero h1 {
+            font-size: 36px;
+        }
+
+        .service-hero p {
+            font-size: 18px;
+        }
+
+        .feature-item, .process-step {
+            min-width: 100%;
+            margin: 15px 0;
+        }
+    }
+
+    /* Page Transition Animation */
+    @keyframes pageTransition {
+        0% { opacity: 0; transform: translateY(20px); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
+
+    body {
+        animation: pageTransition 0.5s ease-out;
+    }
+
+        /* Creator Attribution Styles */
+.creator-attribution {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.creator-text {
+    display: inline-block;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    color: #d4af37;
+    padding: 12px 24px;
+    border-bottom: 2px solid #d4af37;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+}
+
+.creator-attribution a:hover .creator-text {
+    color: white;
+    transform: translateY(-3px);
+    text-shadow: 0 5px 15px rgba(212, 175, 55, 0.5);
+}
+    </style>
+</head>
+<body>
+<!-- Header and Navigation -->
+<header>
+    <div class="logo">COMPANY NAME</div>
+    <div class="hamburger" id="hamburger">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+    </div>
+    <nav>
+        <ul id="menu">
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="index.html#about">ABOUT</a></li>
+            <li class="dropdown">
+                <a href="javascript:void(0)">SERVICES</a>
+                <div class="dropdown-content">
+                    <a href="security-guards.html">Security Guards</a>
+                    <a href="surveillance-systems.html">Surveillance Systems</a>
+                    <a href="access-control.html">Access Control</a>
+                    <a href="risk-assessment.html">Risk Assessment</a>
+                    <a href="vip-protection.html">VIP Protection</a>
+                    <a href="event-security.html">Event Security</a>
+                </div>
+            </li>
+            <li><a href="index.html#gallery">GALLERY</a></li>
+            <li><a href="index.html#quote">QUOTE</a></li>
+            <li><a href="index.html#contact">CONTACT</a></li>
+        </ul>
+    </nav>
+</header>
+
+<!-- Service Hero Section -->
+<section class="service-hero">
+    <div class="service-hero-content">
+        <h1>EVENT SECURITY</h1>
+        <p>Dedicated security teams for public and private events, ensuring smooth operations and guest safety</p>
+    </div>
+</section>
+
+<!-- Service Overview Section -->
+<section class="section dark-bg">
+    <div class="service-container">
+        <div class="service-content">
+            <h2 class="section-title">Comprehensive Event Protection</h2>
+            <p>Our event security services provide professional protection for gatherings of all sizes, from intimate private functions to large-scale public events. We understand that each event has unique security requirements, and we tailor our approach to ensure both effective protection and a positive guest experience.</p>
+            <br>
+            <p>Successful event security requires careful planning, strategic deployment of personnel, and seamless coordination with event organizers and venue staff. Our teams are trained to handle various scenarios while maintaining a welcoming atmosphere that allows attendees to enjoy the event without feeling overly monitored.</p>
+            <br>
+            <p>All of our event security personnel are thoroughly vetted, professionally trained, and experienced in crowd management, conflict resolution, and emergency response. Many have specialized training for specific event types, such as concerts, corporate functions, or sporting events, ensuring they understand the unique dynamics of your particular gathering.</p>
+        </div>
+        <div class="service-image">
+            <img src="/placeholder.svg?height=400&width=400" alt="Event Security">
+        </div>
+    </div>
+
+    <div class="service-features">
+        <div class="feature-item">
+            <div class="icon icon-shield"></div>
+            <h3>Access Control</h3>
+            <p>Professional management of entry points with ticket verification, ID checks, and bag searches as required for your event.</p>
+        </div>
+        <div class="feature-item">
+            <div class="icon icon-shield"></div>
+            <h3>Crowd Management</h3>
+            <p>Trained personnel who monitor crowd dynamics, prevent overcrowding, and ensure safe movement throughout the venue.</p>
+        </div>
+        <div class="feature-item">
+            <div class="icon icon-shield"></div>
+            <h3>Conflict Resolution</h3>
+            <p>Security staff skilled in de-escalation techniques to handle disruptive behavior while maintaining a positive atmosphere.</p>
+        </div>
+        <div class="feature-item">
+            <div class="icon icon-shield"></div>
+            <h3>Emergency Response</h3>
+            <p>Comprehensive planning and trained teams ready to respond quickly and effectively to medical emergencies or security incidents.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Event Types Section -->
+<section class="section darker-bg">
+    <h2 class="section-title">Events We Secure</h2>
+    <div class="service-features">
+        <div class="feature-item">
+            <h3>Corporate Events</h3>
+            <p>Professional security for conferences, product launches, shareholder meetings, and company celebrations.</p>
+        </div>
+        <div class="feature-item">
+            <h3>Concerts & Festivals</h3>
+            <p>Specialized crowd management and artist protection for music events of all sizes.</p>
+        </div>
+        <div class="feature-item">
+            <h3>Sporting Events</h3>
+            <p>Comprehensive security for competitions, tournaments, and athletic gatherings.</p>
+        </div>
+        <div class="feature-item">
+            <h3>Private Celebrations</h3>
+            <p>Discreet security for weddings, anniversary parties, and other personal milestone events.</p>
+        </div>
+        <div class="feature-item">
+            <h3>Trade Shows & Exhibitions</h3>
+            <p>Protection for valuable displays, equipment, and intellectual property at industry exhibitions.</p>
+        </div>
+        <div class="feature-item">
+            <h3>Public Gatherings</h3>
+            <p>Security services for community events, parades, and public celebrations.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Planning Process Section -->
+<section class="section dark-bg">
+    <h2 class="section-title">Our Event Security Process</h2>
+    <div class="process-container">
+        <div class="process-step">
+            <div class="step-number">1</div>
+            <h3>Initial Consultation</h3>
+            <p>We meet with event organizers to understand the event type, expected attendance, venue layout, and specific security concerns.</p>
+        </div>
+        <div class="process-step">
+            <div class="step-number">2</div>
+            <h3>Risk Assessment</h3>
+            <p>Our security experts evaluate potential risks specific to your event and develop appropriate mitigation strategies.</p>
+        </div>
+        <div class="process-step">
+            <div class="step-number">3</div>
+            <h3>Security Planning</h3>
+            <p>We create a comprehensive security plan including staffing requirements, deployment locations, and emergency protocols.</p>
+        </div>
+        <div class="process-step">
+            <div class="step-number">4</div>
+            <h3>Team Briefing</h3>
+            <p>Security personnel receive detailed briefings about the event, venue, and specific responsibilities before deployment.</p>
+        </div>
+        <div class="process-step">
+            <div class="step-number">5</div>
+            <h3>Event Execution</h3>
+            <p>Our teams implement the security plan with ongoing communication and adaptability to changing conditions.</p>
+        </div>
+        <div class="process-step">
+            <div class="step-number">6</div>
+            <h3>Post-Event Review</h3>
+            <p>We conduct a thorough assessment of security operations to identify successes and areas for improvement in future events.</p>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="section darker-bg">
+    <h2 class="section-title">Frequently Asked Questions</h2>
+    <div class="faq-container">
+        <div class="faq-item">
+            <div class="faq-question">How many security personnel will my event need?</div>
+            <div class="faq-answer">
+                <p>The number of security personnel required depends on several factors, including expected attendance, venue size and layout, event type, and risk assessment. As a general guideline
+
+<!-- Footer -->
+<footer>
+    <div class="footer-content">
+        <div class="footer-column">
+            <h3>About Us</h3>
+            <p>Your trusted partner for comprehensive security solutions. Protecting what matters most with expertise and dedication.</p>
+        </div>
+        <div class="footer-column">
+            <h3>Quick Links</h3>
+            <ul class="footer-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#services">Services</a></li>
+                <li><a href="index.html#gallery">Gallery</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+        </div>
+        <div class="footer-column">
+            <h3>Services</h3>
+             <ul class="footer-links">
+                <li><a href="security-guards.html">Security Guards</a></li>
+                <li><a href="surveillance-systems.html">Surveillance Systems</a></li>
+                <li><a href="access-control.html">Access Control</a></li>
+                <li><a href="risk-assessment.html">Risk Assessment</a></li>
+                <li><a href="vip-protection.html">VIP Protection</a></li>
+                <li><a href="event-security.html">Event Security</a></li>
+            </ul>
+        </div>
+        <div class="footer-column">
+            <h3>Contact Info</h3>
+            <p>Email: info@example.com</p>
+            <p>Phone: +1 (555) 123-4567</p>
+            <p>Address: 123 Main Street, Anytown, USA</p>
+        </div>
+    </div>
+    <div class="copyright">
+        &copy; 2024 COMPANY NAME. All rights reserved.
+    </div>
+    <!-- Creator Attribution -->
+    <div class="creator-attribution">
+        <a href="https://yourportfolio.com" target="_blank" rel="noopener noreferrer">
+            <span class="creator-text">Created by BAKOENA DEVHAUS</span>
+        </a>
+    </div>
+</footer>
+
+<script>
+// Mobile Menu Toggle
+const hamburger = document.getElementById('hamburger');
+const menu = document.getElementById('menu');
+
+hamburger.addEventListener('click', () => {
+    menu.classList.toggle('active');
+    hamburger.classList.toggle('active');
+});
+</script>
+</body>
+</html>
